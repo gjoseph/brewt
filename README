@@ -11,9 +11,34 @@ On OSX: ~/Library/Preferences/buatt/buatt.toml
 ```
 ignored = ["microsoft-excel"]
 ```
+TODO: name
+
+brew-update-all-the-things
+BUATT
+brut
+brute
+brewt
+brew brute
+brew brut
+brew brewt
+
+TODO: restart apps (casks) after updates
+=======================================================================================
+See https://github.com/Homebrew/brew/issues/12709
+https://github.com/Homebrew/homebrew-cask/issues/104074
+--> not quite true, apps aren't closed when updating (see Jetbrains Toolbox)
+osascript -e 'tell application id "com.jetbrains.toolbox" to quit'
+osascript -e 'tell application id "com.jetbrains.toolbox" to open' # kinda works, with an error
+open -b "com.jetbrains.toolbox" # works
+find app bundle:
+brew info --json=v2 jetbrains-toolbox | jq -r '.casks[0].artifacts| .. | .launchctl? | select(. != null)'
+
+
 TODO: CLI to show/create config file (perhaps the same that initialises launchagent...)
+=======================================================================================
 
 TODO Setup launchagent
+=======================================================================================
  - see https://github.com/vinceglb/AutoLaunch/blob/main/auto-launch/src/commonMain/kotlin/io/github/vinceglb/autolaunch/AutoLaunch.kt
  - https://launchd.info/
  - previously tried:
