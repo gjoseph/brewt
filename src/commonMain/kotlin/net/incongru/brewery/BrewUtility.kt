@@ -7,7 +7,7 @@ fun runUpgrade(log: Logger, dryRun: Boolean, formulae: List<BrewFormula>, casks:
     val cmdSuffix = if (dryRun) "--dry-run" else ""
     val logSuffix = if (dryRun) " (dry-run):" else ":"
     log("Brew upgrade$logSuffix")
-    "brew upgrade --greedy $cmdSuffix ${formulae.asCliArgs()} ${casks.asCliArgs()}".runCommand()
+    "brew upgrade --yes --greedy $cmdSuffix ${formulae.asCliArgs()} ${casks.asCliArgs()}".runCommand()
 
     log("Brew autoremove$logSuffix")
     "brew autoremove $cmdSuffix".runCommand()
