@@ -16,11 +16,13 @@ repositories {
 }
 
 kotlin {
-
     sourceSets {
         commonMain {
             dependencies {
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.10.0")
+                implementation("com.akuleshov7:ktoml-core:0.7.1")
+                implementation("com.akuleshov7:ktoml-file:0.7.1")
+                implementation("ca.gosyer:kotlin-multiplatform-appdirs:2.0.0")
             }
         }
     }
