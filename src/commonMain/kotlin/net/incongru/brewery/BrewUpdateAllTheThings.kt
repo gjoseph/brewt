@@ -32,10 +32,10 @@ data class Config(
 @OptIn(ExperimentalSerializationApi::class)
 private fun readConfig(): Config {
     val appDirs = AppDirs {
-        appName = "buatt" // TODO name this properly
+        appName = "brewt"
     }
     val configPath: String = appDirs.getUserConfigDir()
-    val tomlFilePath = "$configPath/buatt.toml"
+    val tomlFilePath = "$configPath/brewt.toml"
     return TomlFileReader.decodeFromFile(serializer<Config>(), tomlFilePath)
 }
 

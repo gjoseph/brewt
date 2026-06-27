@@ -26,4 +26,4 @@ jobs:
         with:
           # TODO will need to work out how to sign these
           name: MacOs Universal Binary
-          path: 'build/bin/macos-universal/brew-update-all-the-things'
+          path: 'build/bin/macos-universal/brewt'

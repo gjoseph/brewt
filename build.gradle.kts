@@ -47,15 +47,15 @@ tasks.register<Exec>("macosUniversalBinary") {
 
     onlyIf { System.getProperty("os.name").lowercase().contains("mac") }
     dependsOn("build")
-    val output = layout.buildDirectory.file("bin/macos-universal/brew-update-all-the-things").get().asFile
+    val output = layout.buildDirectory.file("bin/macos-universal/brewt").get().asFile
     output.parentFile.mkdirs()
 
     commandLine(
         "lipo",
         "-create",
         // TODO get those from above rather than hardcode paths
-        "build/bin/macosArm64/releaseExecutable/brew-update-all-the-things.kexe",
-        "build/bin/macosX64/releaseExecutable/brew-update-all-the-things.kexe",
+        "build/bin/macosArm64/releaseExecutable/brewt.kexe",
+        "build/bin/macosX64/releaseExecutable/brewt.kexe",
         "-output", output
     )
 

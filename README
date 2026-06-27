@@ -1,26 +1,24 @@
-This is a silly little rabit-hole project which was initially a bash script that I ran via
-cron. At some point I decided I wanted to run it as a launchagent because cron jobs won't
-"catch up" if the machine was in sleep mode at the scheduled time. With launchagent and recent
-osx versions, the app needs "full disk access" for some reason. Except the app is this case is
-bash, and not my script itself. That started to feel like I was opening my machine to all sorts
-of abuse.
-Remembering how easy it is to run shell commands in Kotlin, I figured I'd give kotlin native a go.
+# Brewt
+
+
+This began as a simple bash script I ran via cron. At some point, I decided I wanted to run it as a launchagent
+because cron jobs won't run while the laptop is in sleep mode at the scheduled time, nor when it wakes up. With
+launchagent and recent osx versions, apps needs "full disk access" for some reason. Except the app is this case is
+bash, and not my script specifically. That didn't feel safe, nor something I'd want to share with others. 3 stars
+aligned to form this rabbit hole of a project: wanting to share this with others because I grew tired of pestering
+colleagues to update their brew formulas, remembering how running shell commands was so easy in Kotlin, and a vague
+desire to learn about Kotlin Multiplatform to build native binaries from Kotlin code.
+
+As with every personal bash script ever written, all sorts of rabbit holes are calling. This is the result.
+
+My initial "brew-update-all-the-things" script was vaguely acronymed into buatt to brut to brute to brewt. I suppose the
+alternative would have been brat.
 
 # Configuration
-On OSX: ~/Library/Preferences/buatt/buatt.toml
+On OSX: ~/Library/Preferences/brewt/brewt.toml
 ```
 ignored = ["microsoft-excel"]
 ```
-TODO: name
-
-brew-update-all-the-things
-BUATT
-brut
-brute
-brewt
-brew brute
-brew brut
-brew brewt
 
 TODO: restart apps (casks) after updates
 =======================================================================================

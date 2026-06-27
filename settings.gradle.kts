@@ -1,1 +1,1 @@
-rootProject.name = "brew-update-all-the-things"
+rootProject.name = "brewt"

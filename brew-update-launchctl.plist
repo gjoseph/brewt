@@ -6,7 +6,7 @@
     <string>hpesojg:brew-update</string>
     <key>ProgramArguments</key>
     <array>
-        <string>/Users/gregoryjoseph/bin/brew-update-all-the-things</string>
+        <string>/Users/gregoryjoseph/bin/brewt</string>
     </array>
     <key>StartCalendarInterval</key>
     <array>
@@ -21,9 +21,9 @@
     <false/>
 
     <key>StandardOutPath</key>
-    <string>/Users/gregoryjoseph/.brew-update-all-the-things.out.log</string>
+    <string>/Users/gregoryjoseph/.brewt.out.log</string>
     <key>StandardErrorPath</key>
-    <string>/Users/gregoryjoseph/.brew-update-all-the-things.err.log</string>
+    <string>/Users/gregoryjoseph/.brewt.err.log</string>
 
 </dict>
 </plist>
