@@ -1,86 +1,8 @@
 package net.incongru.brewery
 
-import ca.gosyer.appdirs.AppDirs
-import com.akuleshov7.ktoml.file.TomlFileReader
-import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.serializer
-import okio.FileNotFoundException
-
-enum class UpdateConfig {
-    /**
-     * Never update.
-     */
-    never,
-
-    /**
-     * Prompt before updating.
-     */
-    prompt,
-
-    /**
-     * Always update without prompting.
-     */
-    always
-}
-
-@Serializable
-data class Config(
-    /**
-     * Whether to prompt before installing upgraded formulae and casks.
-     */
-    val prompt: Boolean = true,
-
-    /**
-     * Whether to update brew itself.
-     */
-    val update: UpdateConfig = UpdateConfig.always,
-
-    /**
-     * Ignores update for the given formulae or casks (simple configuration when there is no name clash)
-     */
-    val ignored: List<String> = emptyList(),
-
-    /**
-     * Ignores update for the given formulae (explicit configuration when there is a name clash with a cask)
-     */
-    val ignoredFormulae: List<String> = emptyList(),
-
-    /**
-     * Ignores update for the given casks (explicit configuration when there is a name clash with a formula)
-     */
-    val ignoredCasks: List<String> = emptyList(),
-
-    /**
-     * List of SSIDs where the update process should run; if connected to any other SSID, the update won't proceed.
-     * If empty, the update will proceed on any network.
-     */
-    val onlyOnWifi: List<String> = emptyList()
-
-    // TODO schedules ?
-)
-
-@OptIn(ExperimentalSerializationApi::class)
-private fun readConfig(): Config {
-    val appDirs = AppDirs {
-        appName = "brewt"
-    }
-    val configPath: String = appDirs.getUserConfigDir()
-    val tomlFilePath = "$configPath/brewt.toml"
-    try {
-        return TomlFileReader.decodeFromFile(serializer<Config>(), tomlFilePath)
-    } catch (e: FileNotFoundException) {
-        log("No configuration file at $tomlFilePath, using defaults")
-        return Config()
-    }
-}
-
-fun main() {
+fun doTheThing(cfg: Config) {
     notif("Brew update starting 😊")
 
-    // TODO configure acceptable SSIDs (e.g only run when connected to certain networks)
-    // (Add <key>NetworkState</key><true/> to launchd as a bare minimum)
-    val cfg = readConfig()
     log("Configuration: $cfg")
 
     if (cfg.update == UpdateConfig.always
