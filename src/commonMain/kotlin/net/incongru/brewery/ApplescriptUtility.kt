@@ -1,8 +1,9 @@
 package net.incongru.brewery
 
- fun notif(message: String) {
+fun notif(message: String) {
     "display notification \"$message\" with title \"🥜Brew upgrade\" sound name \"Frog\"".runAsAppleScript()
 }
+
 fun confirm(message: String): Boolean {
     // if we have a cancel button, we can use exit code of the process since it yields an error
     return "display alert \"🥜 Brew upgrade\" message \"$message\" buttons {\"No\", \"🥜 Yes\"} default button 2 cancel button 1"

@@ -29,8 +29,8 @@ kotlin {
     }
 
     listOf(
-        macosArm64(), // Mac M1
-        macosX64(),   // Mac Legacy
+        macosX64(),
+        macosArm64()
     ).forEach { nativeTarget ->
         nativeTarget.apply {
             binaries {
@@ -44,7 +44,8 @@ kotlin {
 
 tasks.register<Exec>("macosUniversalBinary") {
     group = "Build"
-    description = "Assembles the outputs of macosArm64MainBinaries and macosX64MainBinaries in a universal binary. Only runs on Macos, where `/usr/bin/lipo` is available."
+    description =
+        "Assembles the outputs of macosArm64MainBinaries and macosX64MainBinaries in a universal binary. Only runs on Macos, where `/usr/bin/lipo` is available."
 
     onlyIf { System.getProperty("os.name").lowercase().contains("mac") }
     dependsOn("build")
