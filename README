@@ -30,7 +30,7 @@ brewt
 
 Schedule:
 ```
-brewt --daily
+brewt schedule --daily
 ```
 
 See `brew --help` for more options.

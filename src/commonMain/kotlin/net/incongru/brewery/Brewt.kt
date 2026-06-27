@@ -42,8 +42,8 @@ class Schedule : CliktCommand(
 
 fun main(args: Array<String>) = Brewt()
     .subcommands(
-        Schedule(),
-        UpdateAllTheThings()
+        UpdateAllTheThings(),
+        Schedule()
     ).main(args)
 
 @OptIn(ExperimentalSerializationApi::class)

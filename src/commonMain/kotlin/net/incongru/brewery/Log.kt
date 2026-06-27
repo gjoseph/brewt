@@ -6,6 +6,6 @@ import kotlin.time.ExperimentalTime
 typealias Logger = (String) -> Unit
 
 @OptIn(ExperimentalTime::class)
- val log: (String) -> Unit = { msg ->
+val log: (String) -> Unit = { msg ->
     println("${Clock.System.now()} $msg")
 }

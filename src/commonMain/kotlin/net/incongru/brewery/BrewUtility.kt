@@ -23,7 +23,7 @@ fun runUpgrade(log: Logger, dryRun: Boolean, formulae: List<BrewFormula>, casks:
 }
 
 @Serializable
- data class BrewFormula(
+data class BrewFormula(
     val name: String,
     @SerialName("installed_versions")
     val installedVersions: List<String>,
@@ -36,15 +36,15 @@ fun runUpgrade(log: Logger, dryRun: Boolean, formulae: List<BrewFormula>, casks:
 }
 
 @Serializable
- data class BrewOutdatedOutput(
+data class BrewOutdatedOutput(
     val formulae: List<BrewFormula>,
     val casks: List<BrewFormula>
 )
 
- fun List<BrewFormula>.asCliArgs(): String {
+fun List<BrewFormula>.asCliArgs(): String {
     return this.joinToString(separator = " ", transform = { it.name })
 }
 
- fun List<BrewFormula>.bulletListOfUpdates(): String {
+fun List<BrewFormula>.bulletListOfUpdates(): String {
     return this.joinToString(separator = "\n", transform = { "* ${it.toString()}" })
 }

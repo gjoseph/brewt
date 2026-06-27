@@ -26,7 +26,7 @@ import platform.posix.waitpid
 
 val json: Json by lazy {
     Json {
-        ignoreUnknownKeys=true
+        ignoreUnknownKeys = true
     }
 }
 
