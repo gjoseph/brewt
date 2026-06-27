@@ -14,6 +14,27 @@ As with every personal bash script ever written, all sorts of rabbit holes are c
 My initial "brew-update-all-the-things" script was vaguely acronymed into buatt to brut to brute to brewt. I suppose the
 alternative would have been brat.
 
+# Install
+```
+brew tap gjoseph/tap
+brew trust gjoseph/tap
+brew install brewt
+```
+
+# Run
+
+One shot:
+```
+brewt
+```
+
+Schedule:
+```
+brewt --daily
+```
+
+See `brew --help` for more options.
+
 # Configuration
 On OSX: ~/Library/Preferences/brewt/brewt.toml
 ```
