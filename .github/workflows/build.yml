@@ -18,7 +18,7 @@ jobs:
           install: true
           github_token: ${{ secrets.GITHUB_TOKEN }}
       - name: Build
-        run: gradle macosUniversalBinary
+        run: mise build:macos
 
       - name: Upload Binaries
         if: github.ref == 'refs/heads/main'
