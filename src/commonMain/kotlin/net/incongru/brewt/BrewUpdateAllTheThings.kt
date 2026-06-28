@@ -1,4 +1,4 @@
-package net.incongru.brewery
+package net.incongru.brewt
 
 fun doTheThing(cfg: Config) {
     notif("Brew update starting 😊")

@@ -1,4 +1,4 @@
-package net.incongru.brewery
+package net.incongru.brewt
 
 fun notif(message: String) {
     "display notification \"$message\" with title \"🥜Brew upgrade\" sound name \"Frog\"".runAsAppleScript()

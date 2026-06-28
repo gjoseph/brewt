@@ -1,12 +1,12 @@
-package net.incongru.brewery
+package net.incongru.brewt
 
 import ca.gosyer.appdirs.AppDirs
 import com.akuleshov7.ktoml.file.TomlFileReader
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.Context
+import com.github.ajalt.clikt.core.NoOpCliktCommand
 import com.github.ajalt.clikt.core.findOrSetObject
 import com.github.ajalt.clikt.core.main
-import com.github.ajalt.clikt.core.requireObject
 import com.github.ajalt.clikt.core.subcommands
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.serializer
@@ -16,17 +16,14 @@ class Brewt : CliktCommand() {
     override val invokeWithoutSubcommand = true
     val cfg by findOrSetObject { readConfig() }
     override fun run() {
-        if (currentContext.invokedSubcommand == null) {
+        if (currentContext.invokedSubcommand == null || currentContext.invokedSubcommand is UpdateAllTheThings) {
             doTheThing(cfg)
         }
     }
 }
 
-class UpdateAllTheThings : CliktCommand() {
-    val cfg by requireObject<Config>()
-    override fun run() {
-        doTheThing(cfg)
-    }
+// Just a placeholder which we might as well remove, since we let the root Brewt cmd do the job
+class UpdateAllTheThings : NoOpCliktCommand() {
 }
 
 class Schedule : CliktCommand(

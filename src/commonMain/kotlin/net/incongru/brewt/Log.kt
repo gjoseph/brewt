@@ -1,4 +1,4 @@
-package net.incongru.brewery
+package net.incongru.brewt
 
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime

@@ -7,7 +7,7 @@ kotlin {
     jvmToolchain(25)
 }
 
-group = "net.incongru.brewery"
+group = "net.incongru.brewt"
 version = "1.0-SNAPSHOT"
 description = "An over-engineered script to routinely update a Homebrew setup"
 
@@ -35,7 +35,7 @@ kotlin {
         nativeTarget.apply {
             binaries {
                 executable {
-                    entryPoint = "net.incongru.brewery.main"
+                    entryPoint = "net.incongru.brewt.main"
                 }
             }
         }

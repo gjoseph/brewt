@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
     <key>Label</key>
-    <string>hpesojg:brew-update</string>
+    <string>net.incongru.brewt.brewt</string>
     <key>ProgramArguments</key>
     <array>
         <string>/Users/gregoryjoseph/bin/brewt</string>

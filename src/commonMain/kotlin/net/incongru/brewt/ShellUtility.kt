@@ -1,4 +1,4 @@
-package net.incongru.brewery
+package net.incongru.brewt
 
 import kotlinx.cinterop.ByteVar
 import kotlinx.cinterop.CPointerVar
