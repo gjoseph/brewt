@@ -26,6 +26,11 @@ kotlin {
                 implementation("com.github.ajalt.clikt:clikt:5.1.0")
             }
         }
+        commonTest {
+            dependencies {
+                implementation(kotlin("test"))
+            }
+        }
     }
 
     listOf(

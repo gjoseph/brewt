@@ -11,7 +11,8 @@ fun doTheThing(cfg: Config) {
         log("Updating Homebrew:")
         // brew update-if-needed is faster, but unsure since when it's available, nor exactly what it does'doesn't do
 
-        val updateOutput = "brew update".runCommandAndCaptureOutput()
+        val updateOutput = runCommand("brew update", ::println, mergeStderr = true)
+            .orThrow().output
         if (updateOutput.isNotBlank()) {
             notif("Brew update: \n$updateOutput")
         }
@@ -22,7 +23,7 @@ fun doTheThing(cfg: Config) {
         //     https://github.com/Homebrew/brew/releases/tag/5.0.14
     }
 
-    val outdated = "brew outdated --greedy --json".runCommandAndCaptureOutputAs<BrewOutdatedOutput>()
+    val outdated = runCommand("brew outdated --greedy --json").orThrow().jsonTo<BrewOutdatedOutput>()
     log("Outdated formulae: ${outdated.formulae}")
     log("Outdated casks: ${outdated.casks}")
     // TODO configurable schedules: e.g maybe we don't need to update docker-desktop every time

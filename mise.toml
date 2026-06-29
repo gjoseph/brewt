@@ -4,3 +4,6 @@ gradle = "9.6.1"
 
 [tasks."build:macos"]
 run='''gradle macosUniversalBinary'''
+
+[tasks."test"]
+run='''gradle allTests'''

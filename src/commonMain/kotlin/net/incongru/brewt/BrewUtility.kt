@@ -16,9 +16,13 @@ fun runUpgrade(log: Logger, dryRun: Boolean, formulae: List<BrewFormula>, casks:
     "brew cleanup $cmdSuffix".runCommand()
 
     log("Brew doctor$logSuffix")
-    if ("brew doctor".runCommand(!dryRun) != 0) {
+    val doctored = runCommand("brew doctor", ::println, mergeStderr = true)
+    if (!doctored.ok) {
         // TODO user feedback instead of exit on fail with no user feedback
         log("... the doc wasn't happy 🧑")
+        if (!dryRun) {
+            doctored.orThrow()
+        }
     }
 }
 
