@@ -3,7 +3,16 @@ java = "temurin-25.0.3+9.0.LTS"
 gradle = "9.6.1"
 
 [tasks."build:macos"]
-run='''gradle macosUniversalBinary'''
+run = '''gradle macosUniversalBinary'''
 
 [tasks."test"]
-run='''gradle allTests'''
+run = '''gradle allTests'''
+
+[tasks.quickbuild]
+hide = true
+run = 'gradle linkDebugExecutableMacosArm64'
+
+[tasks.build-and-run]
+raw_args = true
+depends = ['quickbuild']
+run = 'build/bin/macosArm64/debugExecutable/brewt.kexe'
