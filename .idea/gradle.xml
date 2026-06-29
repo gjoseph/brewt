@@ -11,7 +11,7 @@
             <option value="$PROJECT_DIR$" />
           </set>
         </option>
-        <option name="myGradleHome" value="$USER_HOME$/.local/share/mise/installs/gradle/9.6.0/gradle-9.6.0" />
+        <option name="myGradleHome" value="$USER_HOME$/.local/share/mise/installs/gradle/9.6.1/gradle-9.6.1" />
       </GradleProjectSettings>
     </option>
   </component>
