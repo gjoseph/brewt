@@ -7,8 +7,8 @@ import okio.Path.Companion.toPath
 private const val APP_ID = "net.incongru.brewt"
 
 data class Schedule(
-    val minute: Int?, val hour: Int?,
-    val day: Int?, val weekday: Int?, val month: Int?
+    val minute: Int? = null, val hour: Int? = null,
+    val day: Int?=null, val weekday: Int?=null, val month: Int?=null
 ) {
 
     // Minute <integer> The minute (0-59) on which this job will be run.
@@ -17,8 +17,16 @@ data class Schedule(
     // Weekday <integer> The weekday on which this job will be run (0 and 7 are Sunday).
     // If both Day and Weekday are specificed [sic], then the job will be started if either one matches the current date.
     // Month <integer> The month (1-12) on which this job will be run.
-    fun toDictXML() {
-        error("not implemented yet")
+    fun toDictXML() :String {
+        // validate values/combos here?
+        return """
+            <dict>
+            <key>Hour</key>
+            <integer>${hour}</integer>
+            <key>Minute</key>
+            <integer>${minute}</integer>
+            </dict>
+        """.trimIndent()
     }
 }
 
