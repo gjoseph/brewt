@@ -4,8 +4,6 @@ fun doTheThing(brewt: Brewt, cfg: Config) {
     val a = ApplescriptHelper(brewt.sh)
     a.notif("Brew update starting 😊")
 
-    brewt.log.debug("Configuration: $cfg")
-
     if (cfg.update == UpdateConfig.always
         || (cfg.update == UpdateConfig.prompt && a.confirm("Update Homebrew?"))
     ) {

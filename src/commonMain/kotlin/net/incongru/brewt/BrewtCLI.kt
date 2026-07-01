@@ -15,6 +15,10 @@ class BrewtCLI(val brewt: Brewt) : CliktCommand() {
     val cfg by findOrSetObject { brewt.readConfig() }
 
     override fun run() {
+        brewt.log.debug("Env: ${brewt.env}")
+        brewt.log.debug("Configuration: $cfg")
+
+        // No subcommand (or UpdateAllTheThings) specified, run update:
         if (currentContext.invokedSubcommand == null || currentContext.invokedSubcommand is UpdateAllTheThings) {
             doTheThing(brewt, cfg)
         }
