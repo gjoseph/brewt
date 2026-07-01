@@ -7,7 +7,7 @@ import okio.Path.Companion.toPath
 
 private const val APP_ID = "net.incongru.brewt"
 
-class Scheduler(val brewt: Brewt) {
+class Scheduler(val brewt: Brewt, val fileSystem: FileSystem) {
 
     private val plistPath: Path
         get() {
@@ -60,13 +60,13 @@ class Scheduler(val brewt: Brewt) {
         brewt.sh("launchctl disable gui/${brewt.env.userId}/$APP_ID")
 
         brewt.log.info("Removing $plistPath ...")
-        FileSystem.SYSTEM.delete(plistPath, false)
+        this.fileSystem.delete(plistPath, false)
     }
 
     @Throws(IOException::class)
     private fun writeFile(path: Path, contents: String) {
-        // TODO inject FileSystem to testability ?
-        FileSystem.SYSTEM.write(path) {
+        brewt.log.info("Writing to $path ...")
+        this.fileSystem.write(path) {
             writeUtf8(contents)
         }
     }

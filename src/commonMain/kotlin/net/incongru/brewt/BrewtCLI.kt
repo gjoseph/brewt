@@ -7,7 +7,8 @@ import com.github.ajalt.clikt.core.findOrSetObject
 import com.github.ajalt.clikt.core.main
 import com.github.ajalt.clikt.core.subcommands
 import com.github.ajalt.clikt.parameters.arguments.argument
-import kotlinx.cinterop.ExperimentalForeignApi
+import okio.FileSystem
+import okio.SYSTEM
 
 class BrewtCLI(val brewt: Brewt) : CliktCommand() {
     override val invokeWithoutSubcommand = true
@@ -19,25 +20,24 @@ class BrewtCLI(val brewt: Brewt) : CliktCommand() {
         brewt.log.debug("Configuration: $cfg")
 
         // No subcommand (or UpdateAllTheThings) specified, run update:
-        if (currentContext.invokedSubcommand == null || currentContext.invokedSubcommand is UpdateAllTheThings) {
+        if (currentContext.invokedSubcommand == null || currentContext.invokedSubcommand is UpdateAllCmd) {
             doTheThing(brewt, cfg)
         }
     }
 }
 
 // Just a placeholder which we might as well remove, since we let the root Brewt cmd do the job
-class UpdateAllTheThings : NoOpCliktCommand() {}
+class UpdateAllCmd : NoOpCliktCommand("update-all") {}
 
-class Schedule(val brewt: Brewt) : CliktCommand() {
+class ScheduleCmd(val brewt: Brewt) : CliktCommand("schedule") {
     private val hour by argument()
     private val minute by argument()
     override fun help(context: Context): String {
         return "Schedule updates"
     }
 
-    @OptIn(ExperimentalForeignApi::class)
     override fun run() {
-        Scheduler(brewt).enable(hour, minute)
+        Scheduler(brewt, FileSystem.SYSTEM).enable(hour, minute)
         brewt.log.info("schedule done")
     }
 }
@@ -45,6 +45,7 @@ class Schedule(val brewt: Brewt) : CliktCommand() {
 fun main(args: Array<String>) {
     val brewt = Brewt(makeLogger(LoggerMode.VERBOSE))
     BrewtCLI(brewt).subcommands(
-        UpdateAllTheThings(), Schedule(brewt)
+        UpdateAllTheThings(),
+        ScheduleCmd(brewt)
     ).main(args)
 }

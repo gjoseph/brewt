@@ -6,10 +6,14 @@ gradle = "9.6.1"
 depends = ["build:*"]
 
 [tasks."build:macos"]
-run = '''gradle macosUniversalBinary'''
+run = 'gradle macosUniversalBinary'
 
-[tasks."test"]
-run = '''gradle allTests'''
+[tasks."test:jvm:unit"]
+description = 'runs the unit tests in src/commonTest that do not depend on native code'
+run = 'gradle jvmTest'
+
+[tasks."test:all"]
+run = 'gradle allTests'
 
 [tasks.quickbuild]
 hide = true

@@ -11,8 +11,8 @@ class Brewt(val log: Logger) {
         appName = "brewt"
     }
 
-    val env = Env.make()
-    val sh: Sh = ShellHelper(log)
+    val env = makeEnv()
+    val sh: Shell = makeShell(log)
 
     @OptIn(ExperimentalSerializationApi::class)
     fun readConfig(): Config {

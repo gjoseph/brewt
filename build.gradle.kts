@@ -16,6 +16,10 @@ repositories {
 }
 
 kotlin {
+    // JVM target exists purely for fast common-layer test feedback (`./gradlew jvmTest`).
+    // The shipped artifact is the native macOS binary; this is not distributed.
+    jvm()
+
     sourceSets {
         commonMain {
             dependencies {

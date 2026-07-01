@@ -1,6 +1,6 @@
 package net.incongru.brewt
 
-class ApplescriptHelper(val sh: Sh) {
+class ApplescriptHelper(val sh: Shell) {
     fun notif(message: String) {
         runAppleScript(
             """

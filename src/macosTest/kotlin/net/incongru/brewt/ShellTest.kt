@@ -9,7 +9,7 @@ import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
 
 class ShellTest {
-    val sh = ShellHelper(silent())
+    val sh = ShellImpl(silent())
 
     @Test
     fun capturesStdoutAndExitCode() {
@@ -40,7 +40,7 @@ class ShellTest {
 
     @Test
     fun mergeStderrFalseCapturesStdoutOnly() {
-        val r = sh.runCommand("echo out; echo err >&2", silent(), onOutput = ::println, mergeStderr = false)
+        val r = sh.runCommand("echo out; echo err >&2", onOutput = ::println, mergeStderr = false)
         assertEquals("out", r.output)
     }
 
@@ -61,8 +61,7 @@ class ShellTest {
     @Test
     fun teeStreamsAndCaptures() {
         val streamed = StringBuilder()
-        val r =
-            sh.runCommand("printf 'a\nb\nc\n'", onOutput = { streamed.append(it) }, log = silent(), mergeStderr = true)
+        val r = sh.runCommand("printf 'a\nb\nc\n'", onOutput = { streamed.append(it) }, mergeStderr = true)
         assertEquals("a\nb\nc", r.output)          // captured copy is trimEnd()-ed
         assertEquals("a\nb\nc\n", streamed.toString())  // streamed chunks are raw
     }
