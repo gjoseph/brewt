@@ -7,7 +7,7 @@ import platform.posix.getenv
 import platform.posix.getuid
 
 @OptIn(ExperimentalForeignApi::class)
-actual fun makeEnv(): Env {
+fun makeEnv(): Env {
     return Env(
         selfBinaryPath = selfBinaryPath(),
         userId = getuid().toString(),

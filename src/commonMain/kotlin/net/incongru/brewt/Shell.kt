@@ -1,7 +1,5 @@
 package net.incongru.brewt
 
-expect fun makeShell(logger: Logger): Shell
-
 /**
  * Functional wrapper around #runCommand which throws on exit code !=0, streams output to stdout and doesn't return anything.
  */

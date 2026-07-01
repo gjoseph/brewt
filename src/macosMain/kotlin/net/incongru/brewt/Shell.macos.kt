@@ -6,8 +6,6 @@ import platform.posix.fread
 import platform.posix.pclose
 import platform.posix.popen
 
-actual fun makeShell(logger: Logger): Shell = ShellImpl(logger)
-
 class ShellImpl(val log: Logger) : AbstractShellImpl() {
     /**
      * Runs [command] through the shell, returning its output and exit code.

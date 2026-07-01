@@ -1,7 +1,5 @@
 package net.incongru.brewt
 
-expect fun makeEnv(): Env
-
 /**
  * Tiny wrapper around some environment variables/values we need
  */

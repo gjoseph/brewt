@@ -7,10 +7,15 @@ import com.github.ajalt.clikt.core.findOrSetObject
 import com.github.ajalt.clikt.core.main
 import com.github.ajalt.clikt.core.subcommands
 import com.github.ajalt.clikt.parameters.arguments.argument
-import okio.FileSystem
-import okio.SYSTEM
 
-class BrewtCLI(val brewt: Brewt) : CliktCommand() {
+fun startCLI(brewt: Brewt, args: Array<String>) {
+    BrewtCLI(brewt).subcommands(
+        UpdateAllTheThings(),
+        ScheduleCmd(brewt)
+    ).main(args)
+}
+
+private class BrewtCLI(val brewt: Brewt) : CliktCommand() {
     override val invokeWithoutSubcommand = true
 
     val cfg by findOrSetObject { brewt.readConfig() }
@@ -37,15 +42,7 @@ class ScheduleCmd(val brewt: Brewt) : CliktCommand("schedule") {
     }
 
     override fun run() {
-        Scheduler(brewt, FileSystem.SYSTEM).enable(hour, minute)
+        Scheduler(brewt).enable(hour, minute)
         brewt.log.info("schedule done")
     }
-}
-
-fun main(args: Array<String>) {
-    val brewt = Brewt(makeLogger(LoggerMode.VERBOSE))
-    BrewtCLI(brewt).subcommands(
-        UpdateAllTheThings(),
-        ScheduleCmd(brewt)
-    ).main(args)
 }

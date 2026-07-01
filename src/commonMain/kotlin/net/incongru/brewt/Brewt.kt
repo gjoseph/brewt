@@ -5,14 +5,12 @@ import com.akuleshov7.ktoml.file.TomlFileReader
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.serializer
 import okio.FileNotFoundException
+import okio.FileSystem
 
-class Brewt(val log: Logger) {
+class Brewt(val log: Logger, val env: Env, val sh: Shell, val fileSystem: FileSystem) {
     val appDirs: AppDirs = AppDirs {
         appName = "brewt"
     }
-
-    val env = makeEnv()
-    val sh: Shell = makeShell(log)
 
     @OptIn(ExperimentalSerializationApi::class)
     fun readConfig(): Config {

@@ -1,13 +1,12 @@
 package net.incongru.brewt
 
-import okio.FileSystem
 import okio.IOException
 import okio.Path
 import okio.Path.Companion.toPath
 
 private const val APP_ID = "net.incongru.brewt"
 
-class Scheduler(val brewt: Brewt, val fileSystem: FileSystem) {
+class Scheduler(val brewt: Brewt) {
 
     private val plistPath: Path
         get() {
@@ -60,13 +59,13 @@ class Scheduler(val brewt: Brewt, val fileSystem: FileSystem) {
         brewt.sh("launchctl disable gui/${brewt.env.userId}/$APP_ID")
 
         brewt.log.info("Removing $plistPath ...")
-        this.fileSystem.delete(plistPath, false)
+        brewt.fileSystem.delete(plistPath, false)
     }
 
     @Throws(IOException::class)
     private fun writeFile(path: Path, contents: String) {
         brewt.log.info("Writing to $path ...")
-        this.fileSystem.write(path) {
+        brewt.fileSystem.write(path) {
             writeUtf8(contents)
         }
     }
