@@ -6,6 +6,22 @@ import okio.Path.Companion.toPath
 
 private const val APP_ID = "net.incongru.brewt"
 
+data class Schedule(
+    val minute: Int?, val hour: Int?,
+    val day: Int?, val weekday: Int?, val month: Int?
+) {
+
+    // Minute <integer> The minute (0-59) on which this job will be run.
+    // Hour <integer> The hour (0-23) on which this job will be run.
+    // Day <integer> The day of the month (1-31) on which this job will be run.
+    // Weekday <integer> The weekday on which this job will be run (0 and 7 are Sunday).
+    // If both Day and Weekday are specificed [sic], then the job will be started if either one matches the current date.
+    // Month <integer> The month (1-12) on which this job will be run.
+    fun toDictXML() {
+        error("not implemented yet")
+    }
+}
+
 class Scheduler(val brewt: Brewt) {
 
     private val plistPath: Path
@@ -19,11 +35,13 @@ class Scheduler(val brewt: Brewt) {
             brewt.env.selfBinaryPath, hour, minutes, brewt.env.userHome // TODO use appdirs.logFolder ?
         )
         writeFile(plistPath, plistContents)
-        brewt.log.info("Boostrapping $plistPath ...")
-        brewt.sh("launchctl bootstrap gui/${brewt.env.userId} $plistPath")
 
         brewt.log.info("Enabling $plistPath (to persist across logins)")
         brewt.sh("launchctl enable gui/${brewt.env.userId}/$APP_ID")
+
+        brewt.log.info("Boostrapping $plistPath ...")
+        brewt.sh("launchctl bootstrap gui/${brewt.env.userId} $plistPath")
+
         check()
     }
 
@@ -46,6 +64,42 @@ class Scheduler(val brewt: Brewt) {
 
         // # Run it right now to test, without waiting for 13:23
         // launchctl kickstart -k gui/$UID/net.incongru.brewt
+
+        /**
+
+
+        la_status() {  # usage: la_status <label> uid
+        local label="$1" uid="${2:-$(id -u)}"
+        local db="/var/db/com.apple.xpc.launchd/disabled.$uid.plist"
+
+        [ -f "$HOME/Library/LaunchAgents/$label.plist" ] \
+        && echo "file:         present" || echo "file:         absent"
+
+        launchctl print "gui/$uid/$label" >/dev/null 2>&1 \
+        && echo "bootstrapped: yes" || echo "bootstrapped: no"
+
+        local d
+        d=$(plutil -convert json -o - "$db" 2>/dev/null | jq -r --arg l "$label" '. [ $ l ] // false')
+        [ "$d" = "true" ] && echo "disabled:     yes" || echo "disabled:     no"
+        }
+        # la_status net.incongru.brewt
+
+        (Using jq --arg l … '. [ $ l ]' sidesteps the dotted-key problem entirely — no escaping needed, unlike plutil
+        -extract.)
+
+        Caveats
+
+        - Exit codes aren't formally documented API either — but they're far more stable than scraping output,
+        and 113 (could not find) has been consistent for years. Confidence: high, though not contractually
+        guaranteed.
+        - The disabled-db plist reflects persistent state, not live memory. If something was disabled/enabled via
+        direct file edit this session (like our earlier cleanup), the file and launchd's in-memory view diverge
+        until reboot. After a normal launchctl enable/disable they stay in sync. So this check answers "what will
+        it be after reboot / what's on disk," which is usually what you want.
+        - "Currently running" (has a PID) is the one thing with no clean signal — the PID only appears in
+        print/list text output, which is non-API. For a RunAtLoad=false scheduled agent that's momentary anyway;
+        if you truly need it, parse launchctl list <label>'s "PID" key and accept the fragility.
+         */
     }
 
     fun disable() {
