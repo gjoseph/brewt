@@ -9,10 +9,11 @@ import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
 
 class ShellTest {
+    val sh = ShellHelper(silent())
 
     @Test
     fun capturesStdoutAndExitCode() {
-        val r = runCommand("echo hi")
+        val r = sh.withoutThrowing("echo hi")
         assertEquals(0, r.exitCode)
         assertEquals("hi", r.output)
         assertTrue(r.ok)
@@ -25,7 +26,7 @@ class ShellTest {
      */
     @Test
     fun mergesStderrForCompoundCommand() {
-        val r = runCommand("echo out && echo err >&2")
+        val r = sh("echo out && echo err >&2")
         assertContains(r.output, "out")
         assertContains(r.output, "err")
     }
@@ -33,19 +34,19 @@ class ShellTest {
     /** Same hazard across a pipe: the left side's stderr must still be merged. */
     @Test
     fun mergesStderrFromLeftSideOfPipe() {
-        val r = runCommand("ls /no_such_path_xyz | cat")
+        val r = sh("ls /no_such_path_xyz | cat")
         assertContains(r.output, "no_such_path_xyz")
     }
 
     @Test
     fun mergeStderrFalseCapturesStdoutOnly() {
-        val r = runCommand("echo out; echo err >&2", mergeStderr = false)
+        val r = sh.runCommand("echo out; echo err >&2", silent(), onOutput = ::println, mergeStderr = false)
         assertEquals("out", r.output)
     }
 
     @Test
     fun nonZeroExitIsReportedAndOrThrowThrows() {
-        val r = runCommand("ls /definitely_nonexistent_xyz")
+        val r = sh.withoutThrowing("ls /definitely_nonexistent_xyz")
         assertFalse(r.ok)
         assertNotEquals(0, r.exitCode)
         assertFailsWith<IllegalStateException> { r.orThrow() }
@@ -53,14 +54,15 @@ class ShellTest {
 
     @Test
     fun orThrowReturnsSelfOnSuccess() {
-        assertEquals("ok", runCommand("echo ok").orThrow().output)
+        assertEquals("ok", sh("echo ok").orThrow().output)
     }
 
     /** The tee: output is streamed to [onOutput] live AND captured in the result. */
     @Test
     fun teeStreamsAndCaptures() {
         val streamed = StringBuilder()
-        val r = runCommand("printf 'a\nb\nc\n'", onOutput = { streamed.append(it) })
+        val r =
+            sh.runCommand("printf 'a\nb\nc\n'", onOutput = { streamed.append(it) }, log = silent(), mergeStderr = true)
         assertEquals("a\nb\nc", r.output)          // captured copy is trimEnd()-ed
         assertEquals("a\nb\nc\n", streamed.toString())  // streamed chunks are raw
     }

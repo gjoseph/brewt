@@ -6,6 +6,7 @@ enum class LoggerMode { VERBOSE, NORMAL, QUIET }
 enum class LogLevel { DEBUG, INFO, WARN, ERROR }
 
 fun makeLogger(mode: LoggerMode): Logger = LoggerImpl(mode)
+fun silent(): Logger = Silent()
 
 interface Logger {
     operator fun invoke(level: LogLevel, message: String)
@@ -39,5 +40,10 @@ private class LoggerImpl(val mode: LoggerMode) : Logger {
 
     private fun logIt(level: LogLevel, message: String) {
         println("${Clock.System.now()} $level $message")
+    }
+}
+
+private class Silent : Logger {
+    override operator fun invoke(level: LogLevel, message: String) {
     }
 }
