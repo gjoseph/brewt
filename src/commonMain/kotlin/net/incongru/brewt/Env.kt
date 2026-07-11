@@ -8,4 +8,5 @@ data class Env(
     val userId: String,
     val userName: String,
     val userHome: String,
+    val brewBinary: String,
 )

@@ -10,7 +10,7 @@ fun doTheThing(brewt: Brewt, cfg: Config) {
         brewt.log.info("Updating Homebrew:")
         // brew update-if-needed is faster, but unsure since when it's available, nor exactly what it does'doesn't do
 
-        val updateOutput = brewt.sh("brew update").output
+        val updateOutput = brewt.sh("${brewt.env.brewBinary} update").output
         if (updateOutput.isNotBlank()) {
             a.notif("Brew update: \n$updateOutput")
         }
@@ -21,7 +21,7 @@ fun doTheThing(brewt: Brewt, cfg: Config) {
         //     https://github.com/Homebrew/brew/releases/tag/5.0.14
     }
 
-    val outdated = brewt.sh("brew outdated --greedy --json").jsonTo<BrewOutdatedOutput>()
+    val outdated = brewt.sh("${brewt.env.brewBinary} outdated --greedy --json").jsonTo<BrewOutdatedOutput>()
     brewt.log.info("Outdated formulae: ${outdated.formulae}")
     brewt.log.info("Outdated casks: ${outdated.casks}")
     // TODO configurable schedules: e.g maybe we don't need to update docker-desktop every time
@@ -31,12 +31,12 @@ fun doTheThing(brewt: Brewt, cfg: Config) {
 
     if (formulaeToUpdate.isNotEmpty()) {
         brewt.log.info("Brew pre-fetch outdated formulae:")
-        brewt.sh("brew fetch --formula --deps ${formulaeToUpdate.asCliArgs()}")
+        brewt.sh("${brewt.env.brewBinary} fetch --formula --deps ${formulaeToUpdate.asCliArgs()}")
     }
 
     if (casksToUpdate.isNotEmpty()) {
         brewt.log.info("Brew pre-fetch outdated casks:")
-        brewt.sh("brew fetch --cask ${casksToUpdate.asCliArgs()}")
+        brewt.sh("${brewt.env.brewBinary} fetch --cask ${casksToUpdate.asCliArgs()}")
     }
 
     brewt.log.info("Update and download done.")

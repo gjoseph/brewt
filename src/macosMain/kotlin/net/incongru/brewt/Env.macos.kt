@@ -13,6 +13,7 @@ fun makeEnv(): Env {
         userId = getuid().toString(),
         userName = env("USER"),
         userHome = env("HOME"),
+        "/opt/homebrew/bin/brew" // TODO configure or detect
     )
 }
 
