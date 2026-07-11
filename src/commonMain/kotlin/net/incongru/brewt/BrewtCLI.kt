@@ -10,7 +10,7 @@ import com.github.ajalt.clikt.parameters.arguments.argument
 
 fun startCLI(brewt: Brewt, args: Array<String>) {
     BrewtCLI(brewt).subcommands(
-        UpdateAllTheThings(),
+        UpdateAllCmd(),
         ScheduleCmd(brewt)
     ).main(args)
 }
@@ -24,9 +24,9 @@ private class BrewtCLI(val brewt: Brewt) : CliktCommand() {
         brewt.log.debug("Env: ${brewt.env}")
         brewt.log.debug("Configuration: $cfg")
 
-        // No subcommand (or UpdateAllTheThings) specified, run update:
+        // No subcommand (or UpdateAllCmd) specified, run update:
         if (currentContext.invokedSubcommand == null || currentContext.invokedSubcommand is UpdateAllCmd) {
-            doTheThing(brewt, cfg)
+            updateAll(BrewWrapper(brewt), ApplescriptHelper(brewt.sh), brewt.log, cfg)
         }
     }
 }
