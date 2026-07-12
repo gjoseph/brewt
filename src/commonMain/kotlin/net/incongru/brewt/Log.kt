@@ -1,5 +1,7 @@
 package net.incongru.brewt
 
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Clock
 
 enum class LoggerMode { VERBOSE, NORMAL, QUIET }
@@ -39,7 +41,10 @@ private class LoggerImpl(val mode: LoggerMode) : Logger {
     }
 
     private fun logIt(level: LogLevel, message: String) {
-        println("${Clock.System.now()} $level $message")
+        val ts = Clock.System.now()
+            .toLocalDateTime(TimeZone.currentSystemDefault())
+            .toString()
+        println("$ts $level $message")
     }
 }
 
