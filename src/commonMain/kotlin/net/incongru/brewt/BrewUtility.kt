@@ -3,23 +3,23 @@ package net.incongru.brewt
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-fun runUpgrade(log: Logger, dryRun: Boolean, formulae: List<BrewFormula>, casks: List<BrewFormula>) {
+fun runUpgrade(brewt: Brewt, dryRun: Boolean, formulae: List<BrewFormula>, casks: List<BrewFormula>) {
     val cmdSuffix = if (dryRun) "--dry-run" else ""
     val logSuffix = if (dryRun) " (dry-run):" else ":"
-    log("Brew upgrade$logSuffix")
-    "brew upgrade --yes --greedy $cmdSuffix ${formulae.asCliArgs()} ${casks.asCliArgs()}".runCommand()
+    brewt.log.info("Brew upgrade$logSuffix")
+    brewt.sh("brew upgrade --yes --greedy $cmdSuffix ${formulae.asCliArgs()} ${casks.asCliArgs()}")
 
-    log("Brew autoremove$logSuffix")
-    "brew autoremove $cmdSuffix".runCommand()
+    brewt.log.info("Brew autoremove$logSuffix")
+    brewt.sh("brew autoremove $cmdSuffix")
 
-    log("Brew cleanup$logSuffix")
-    "brew cleanup $cmdSuffix".runCommand()
+    brewt.log.info("Brew cleanup$logSuffix")
+    brewt.sh("brew cleanup $cmdSuffix")
 
-    log("Brew doctor$logSuffix")
-    val doctored = runCommand("brew doctor", ::println, mergeStderr = true)
+    brewt.log.info("Brew doctor$logSuffix")
+    val doctored = brewt.sh.withoutThrowing("brew doctor")
     if (!doctored.ok) {
         // TODO user feedback instead of exit on fail with no user feedback
-        log("... the doc wasn't happy 🧑")
+        brewt.log.warn("... the doc wasn't happy 🧑")
         if (!dryRun) {
             doctored.orThrow()
         }

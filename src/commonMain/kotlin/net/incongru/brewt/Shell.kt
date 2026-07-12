@@ -14,10 +14,27 @@ val json: Json by lazy {
 }
 
 /**
- * Simple wrapper around #runCommand which throws on exit code !=0, streams output to stdout and doesn't return anything.
+ * Functional wrapper around #runCommand which throws on exit code !=0, streams output to stdout and doesn't return anything.
  */
-fun String.runCommand() {
-    runCommand(this, ::println, mergeStderr = true).orThrow()
+interface Sh {
+    operator fun invoke(command: String): ShellResult
+    fun withoutThrowing(command: String): ShellResult
+}
+
+class ShellHelper(val logger: Logger) : Sh {
+    override operator fun invoke(command: String): ShellResult {
+        return invoke(command, true)
+    }
+
+    override fun withoutThrowing(command: String): ShellResult {
+        return invoke(command, false)
+    }
+
+    private fun invoke(command: String, orThrow: Boolean): ShellResult {
+        val res = runCommand(command, this.logger, ::println, mergeStderr = true)
+        // fake a default value of true since functional interfaces can't specify default values
+        return if (orThrow) res.orThrow() else res;
+    }
 }
 
 data class ShellResult(val exitCode: Int, val output: String) {
@@ -48,13 +65,15 @@ data class ShellResult(val exitCode: Int, val output: String) {
  * garbled. Fine for typical brew/CLI text.
  */
 @OptIn(ExperimentalForeignApi::class)
-fun runCommand(
+private fun runCommand(
     command: String,
-    // TODO replace with a function that knows about --quiet/--verbose
+    log: Logger,
+    // TODO merge with Logger
     onOutput: ((String) -> Unit)? = ::println,
     mergeStderr: Boolean = true,
 ): ShellResult {
     val shellCommand = if (mergeStderr) "{ $command ; } 2>&1" else command
+    log.debug("Executing $shellCommand:")
     val fp = popen(shellCommand, "r") ?: return ShellResult(-1, "Failed to start: $command")
     val captured = buildString {
         val buffer = ByteArray(4096)

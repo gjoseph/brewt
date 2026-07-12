@@ -24,6 +24,7 @@ kotlin {
                 implementation("com.akuleshov7:ktoml-file:0.7.1")
                 implementation("ca.gosyer:kotlin-multiplatform-appdirs:2.0.0")
                 implementation("com.github.ajalt.clikt:clikt:5.1.0")
+                implementation("com.squareup.okio:okio:3.16.2")
             }
         }
         commonTest {
