@@ -6,30 +6,6 @@ import okio.Path.Companion.toPath
 
 private const val APP_ID = "net.incongru.brewt"
 
-data class Schedule(
-    val minute: Int? = null, val hour: Int? = null,
-    val day: Int?=null, val weekday: Int?=null, val month: Int?=null
-) {
-
-    // Minute <integer> The minute (0-59) on which this job will be run.
-    // Hour <integer> The hour (0-23) on which this job will be run.
-    // Day <integer> The day of the month (1-31) on which this job will be run.
-    // Weekday <integer> The weekday on which this job will be run (0 and 7 are Sunday).
-    // If both Day and Weekday are specificed [sic], then the job will be started if either one matches the current date.
-    // Month <integer> The month (1-12) on which this job will be run.
-    fun toDictXML() :String {
-        // validate values/combos here?
-        return """
-            <dict>
-            <key>Hour</key>
-            <integer>${hour}</integer>
-            <key>Minute</key>
-            <integer>${minute}</integer>
-            </dict>
-        """.trimIndent()
-    }
-}
-
 class Scheduler(val brewt: Brewt) {
 
     private val plistPath: Path
@@ -37,10 +13,11 @@ class Scheduler(val brewt: Brewt) {
             return brewt.env.userHome.toPath().resolve("Library/LaunchAgents/$APP_ID.plist")
         }
 
-    fun enable(hour: String, minutes: String) {
+    fun enable(schedule: Schedule) {
         disable()
         val plistContents = genPlist(
-            brewt.env.selfBinaryPath, hour, minutes, brewt.env.userHome // TODO use appdirs.logFolder ?
+            brewt.env.selfBinaryPath, schedule,
+            brewt.env.userHome // TODO use appdirs.logFolder ?
         )
         writeFile(plistPath, plistContents)
 
@@ -133,7 +110,9 @@ class Scheduler(val brewt: Brewt) {
     }
 
     private fun genPlist(
-        binaryLocation: String, hour: String, minutes: String, logFolder: String
+        binaryLocation: String,
+        schedule: Schedule,
+        logFolder: String
     ): String {
         return """
 <?xml version="1.0" encoding="UTF-8"?>
@@ -148,12 +127,7 @@ class Scheduler(val brewt: Brewt) {
     </array>
     <key>StartCalendarInterval</key>
     <array>
-        <dict>
-            <key>Hour</key>
-            <integer>${hour}</integer>
-            <key>Minute</key>
-            <integer>${minutes}</integer>
-        </dict>
+        ${schedule.toDictXML()}
     </array>
     <!--
     <key>KeepAlive</key>
