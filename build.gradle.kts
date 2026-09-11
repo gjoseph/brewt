@@ -44,7 +44,7 @@ kotlin {
         // JVM runs Kotest specs via the JUnit Platform engine (JVM-only artifact).
         jvmTest {
             dependencies {
-                implementation("io.kotest:kotest-runner-junit5:6.2.4")
+                implementation("io.kotest:kotest-runner-junit5:6.2.5")
             }
         }
     }
