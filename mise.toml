@@ -1,6 +1,6 @@
 [tools]
 java = "temurin-25.0.4+101.0.LTS"
-gradle = "9.8.0"
+gradle = "9.8.1"
 watchexec = "latest"
 
 [tasks.build]
