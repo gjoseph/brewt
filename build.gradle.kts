@@ -37,7 +37,7 @@ kotlin {
             dependencies {
                 // implementation(kotlin("test"))
                 implementation("io.kotest:kotest-framework-engine:6.2.5")
-                implementation("io.kotest:kotest-assertions-core:6.2.5")
+                implementation("io.kotest:kotest-assertions-core:6.2.6")
                 implementation("org.xmlunit:xmlunit-core:2.14.0")
             }
         }
