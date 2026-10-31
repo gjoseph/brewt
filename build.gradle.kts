@@ -2,7 +2,7 @@ plugins {
     kotlin("multiplatform") version "2.4.21"
     id("org.jetbrains.kotlin.plugin.serialization") version "2.4.21"
     id("io.kotest") version "6.2.6"
-    id("com.google.devtools.ksp") version "2.3.12"
+    id("com.google.devtools.ksp") version "2.3.13"
 }
 
 kotlin {
